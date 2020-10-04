@@ -1,0 +1,196 @@
+<html>
+
+<head>
+  <style>
+    body {
+      color: white;
+    }
+
+    #map,
+    #circles_container {
+      vertical-align: top;
+      display: inline-block
+    }
+
+    #map {
+      width: 1000px;
+    }
+
+    /* svg {
+      background: url("https://static.wikia.nocookie.net/apexlegends_gamepedia_en/images/7/77/Kings_Canyon_MU3.png/revision/latest/scale-to-width-down/1200?cb=20200714005002") no-repeat;
+    } */
+
+    svg {
+      width: 1200px;
+      height: 1178px;
+      background: url("kc.png") no-repeat
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <div id="circles_container">
+    <h3>Round 1</h3>
+    <ul>
+      <li>x: 478.3872 <- changes when user moves the circle</li> <li>y: -383.2</li>
+      <li>radius: 500</li>
+      <li><a>MUTE</a> | <a>SOLO</a> | <a>SOME OTHER ACTION</a></li>
+    </ul>
+    <h3>Round 2</h3>
+    <ul>
+      <li>x: 278.3872</li>
+      <li>y: -183.2</li>
+      <li>radius: 400</li>
+      <li><a>MUTE</a> | <a>SOLO</a> | <a>SOME OTHER ACTION</a></li>
+    </ul>
+  </div> -->
+
+  <!-- <img
+    src="https://static.wikia.nocookie.net/apexlegends_gamepedia_en/images/7/77/Kings_Canyon_MU3.png/revision/latest/scale-to-width-down/1200?cb=20200714005002"
+    alt=""> -->
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20" onload="makeDraggable(evt)">
+    <g>
+      <circle data-circle="1" id="circle1" class="circle" cx="16" cy="10" r="7.3" stroke="yellow" stroke-width=".05"
+        fill="#ffffff00" />
+      <circle data-circle="2" id="circle2" class="circle" cx="16" cy="10" r="4.7" stroke="cyan" stroke-width=".05"
+        fill="#ffffff00" />
+      <circle data-circle="3" id="circle3" class="circle" cx="16" cy="10" r="2.9" stroke="magenta" stroke-width=".05"
+        fill="#ffffff00" />
+      <circle data-circle="4" id="circle4" class="circle" cx="16" cy="10" r="1.4" stroke="orange" stroke-width=".05"
+        fill="#ffffff00" />
+      <circle data-circle="5" id="circle5" class="circle" cx="16" cy="10" r="0.7" stroke="red" stroke-width=".05"
+        fill="#ffffff00" />
+
+      <line data-from="1" data-to="2" stroke="cyan" stroke-width=".05" />
+      <line data-from="2" data-to="3" stroke="magenta" stroke-width=".05" />
+      <line data-from="3" data-to="4" stroke="orange" stroke-width=".05" />
+      <line data-from="4" data-to="5" stroke="red" stroke-width=".05" />
+
+
+    </g>
+    <!-- <circle class="circle" cx="10" cy="8" r="3" stroke="#00ff00" stroke-width=".05" fill="#ffffff00" /> -->
+    <!-- <circle class="circle" cx="10" cy="8" r="2" stroke="#00ff00" stroke-width=".05" fill="#ffffff00" /> -->
+  </svg>
+
+
+
+  <!-- <div id="map">
+    <img src="Untitled.png">
+  </div> -->
+
+  <script type="text/javascript">
+
+    console.log(true)
+    let maffs = {};
+
+    function makeDraggable(evt) {
+      var svg = evt.target;
+      svg.addEventListener('mousedown', startDrag);
+      svg.addEventListener('mousemove', drag);
+      svg.addEventListener('mouseup', endDrag);
+      svg.addEventListener('mouseleave', endDrag);
+
+
+
+      var selectedElement, offset;
+      function startDrag(evt) {
+        if (evt.target.classList.contains('circle')) {
+          selectedElement = evt.target;
+          offset = getMousePosition(evt);
+          offset.x -= parseFloat(selectedElement.getAttributeNS(null, "cx"));
+          offset.y -= parseFloat(selectedElement.getAttributeNS(null, "cy"));
+        }
+      }
+
+
+      function drag(evt) {
+        if (selectedElement) {
+          evt.preventDefault();
+          var coord = getMousePosition(evt);
+          selectedElement.setAttributeNS(null, "cx", coord.x - offset.x);
+          selectedElement.setAttributeNS(null, "cy", coord.y - offset.y);
+
+          var cx = selectedElement.getAttributeNS(null, "cx");
+          var cy = selectedElement.getAttributeNS(null, "cy");
+
+          const crosshair = selectedElement.parentNode.getElementsByTagName('line');
+          const vertical = crosshair[0];
+          const horizontal = crosshair[1];
+          const vertical2 = crosshair[2];
+          const horizontal2 = crosshair[3];
+
+
+          var circleId = parseInt(selectedElement.getAttributeNS(null, 'data-circle'));
+
+
+          maffs[circleId] = { cx: cx, cy: cy, }
+
+          const lineFrom = document.querySelector(`line[data-from="${circleId}"]`)
+          const lineTo = document.querySelector(`line[data-to="${circleId}"]`)
+
+          var nextCircleKey = circleId + 1;
+          var previousCircleKey = circleId - 1;
+
+          if (maffs[nextCircleKey]) {
+            lineFrom.setAttributeNS(null, "x1", cx);
+            lineFrom.setAttributeNS(null, "x2", maffs[nextCircleKey]['cx']);
+            lineFrom.setAttributeNS(null, "y1", cy);
+            lineFrom.setAttributeNS(null, "y2", maffs[nextCircleKey]['cy']);
+          }
+
+          if (maffs[previousCircleKey]) {
+            lineTo.setAttributeNS(null, "x1", cx);
+            lineTo.setAttributeNS(null, "x2", maffs[previousCircleKey]['cx']);
+            lineTo.setAttributeNS(null, "y1", cy);
+            lineTo.setAttributeNS(null, "y2", maffs[previousCircleKey]['cy']);
+          }
+
+          // horizontal.setAttributeNS(null, "x1", cx);
+          // horizontal.setAttributeNS(null, "x2", cx);
+          // horizontal.setAttributeNS(null, "y1", parseFloat(cy - 0.1));
+          // horizontal.setAttributeNS(null, "y2", cy);
+
+          // vertical2.setAttributeNS(null, "x1", cx);
+          // vertical2.setAttributeNS(null, "x2", 0);
+          // vertical2.setAttributeNS(null, "y1", cy);
+          // vertical2.setAttributeNS(null, "y2", 0);
+
+          // horizontal2.setAttributeNS(null, "x1", cx);
+          // horizontal2.setAttributeNS(null, "x2", cx);
+          // horizontal2.setAttributeNS(null, "y1", cy + 0.1);
+          // horizontal2.setAttributeNS(null, "y2", cy);
+
+          // console.log(coord.x - offset.x, coord.y - offset.y)
+        }
+      }
+
+
+
+
+      function endDrag(evt) {
+        selectedElement = null;
+      }
+
+
+
+      function getMousePosition(evt) {
+        var CTM = svg.getScreenCTM();
+        return {
+          x: (evt.clientX - CTM.e) / CTM.a,
+          y: (evt.clientY - CTM.f) / CTM.d
+        };
+      }
+
+    }
+
+
+
+
+
+
+
+
+  </script>
+</body>
+
+</html>
