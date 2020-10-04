@@ -1,25 +1,11 @@
-<html>
+<html lang="en">
 
 <head>
+  <title>Pnoexz' Apex Legends circle playground</title>
   <style>
     body {
       color: white;
     }
-
-    #map,
-    #circles_container {
-      vertical-align: top;
-      display: inline-block
-    }
-
-    #map {
-      width: 1000px;
-    }
-
-    /* svg {
-      background: url("https://static.wikia.nocookie.net/apexlegends_gamepedia_en/images/7/77/Kings_Canyon_MU3.png/revision/latest/scale-to-width-down/1200?cb=20200714005002") no-repeat;
-    } */
-
     svg {
       width: 1200px;
       height: 1178px;
@@ -46,7 +32,7 @@
 
 
   <script type="text/javascript">
-    let maffs = {};
+    let circlesData = {};
 
     function makeDraggable(evt) {
       var svg = evt.target;
@@ -76,16 +62,9 @@
           var cx = selectedElement.getAttributeNS(null, "cx");
           var cy = selectedElement.getAttributeNS(null, "cy");
 
-          const crosshair = selectedElement.parentNode.getElementsByTagName('line');
-          const vertical = crosshair[0];
-          const horizontal = crosshair[1];
-          const vertical2 = crosshair[2];
-          const horizontal2 = crosshair[3];
-
-
           var circleId = parseInt(selectedElement.getAttributeNS(null, 'data-circle'));
 
-          maffs[circleId] = { cx: cx, cy: cy, }
+          circlesData[circleId] = { cx: cx, cy: cy, }
 
           const lineFrom = document.querySelector(`line[data-from="${circleId}"]`)
           const lineTo = document.querySelector(`line[data-to="${circleId}"]`)
@@ -93,28 +72,28 @@
           var nextCircleKey = circleId + 1;
           var previousCircleKey = circleId - 1;
 
-          if (maffs[nextCircleKey]) {
+          if (circlesData[nextCircleKey]) {
             lineFrom.setAttributeNS(null, "x1", cx);
-            lineFrom.setAttributeNS(null, "x2", maffs[nextCircleKey]['cx']);
+            lineFrom.setAttributeNS(null, "x2", circlesData[nextCircleKey]['cx']);
             lineFrom.setAttributeNS(null, "y1", cy);
-            lineFrom.setAttributeNS(null, "y2", maffs[nextCircleKey]['cy']);
+            lineFrom.setAttributeNS(null, "y2", circlesData[nextCircleKey]['cy']);
           }
 
-          if (maffs[previousCircleKey]) {
+          if (circlesData[previousCircleKey]) {
             lineTo.setAttributeNS(null, "x1", cx);
-            lineTo.setAttributeNS(null, "x2", maffs[previousCircleKey]['cx']);
+            lineTo.setAttributeNS(null, "x2", circlesData[previousCircleKey]['cx']);
             lineTo.setAttributeNS(null, "y1", cy);
-            lineTo.setAttributeNS(null, "y2", maffs[previousCircleKey]['cy']);
+            lineTo.setAttributeNS(null, "y2", circlesData[previousCircleKey]['cy']);
           }
         }
       }
 
-      function endDrag(evt) {
+      function endDrag() {
         selectedElement = null;
       }
 
       function getMousePosition(evt) {
-        var CTM = svg.getScreenCTM();
+        const CTM = svg.getScreenCTM();
         return {
           x: (evt.clientX - CTM.e) / CTM.a,
           y: (evt.clientY - CTM.f) / CTM.d
