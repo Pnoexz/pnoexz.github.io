@@ -18,11 +18,11 @@
 <body>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20" onload="makeDraggable(evt)">
     <g stroke-width=".05" fill="#ffffff00">
-      <circle data-circle="1" id="circle1" class="circle" cx="10" cy="10" r="7.3" stroke="yellow" />
-      <circle data-circle="2" id="circle2" class="circle" cx="10" cy="10" r="4.7" stroke="cyan" />
-      <circle data-circle="3" id="circle3" class="circle" cx="16" cy="10" r="2.9" stroke="magenta" />
-      <circle data-circle="4" id="circle4" class="circle" cx="10" cy="10" r="1.4" stroke="orange" />
-      <circle data-circle="5" id="circle5" class="circle" cx="10" cy="10" r="0.4" stroke="red" />
+      <circle data-circle="1" id="circle1" class="circle" r="7.3" stroke="yellow" />
+      <circle data-circle="2" id="circle2" class="circle" r="4.7" stroke="cyan" />
+      <circle data-circle="3" id="circle3" class="circle" r="2.9" stroke="magenta" />
+      <circle data-circle="4" id="circle4" class="circle" r="1.4" stroke="orange" />
+      <circle data-circle="5" id="circle5" class="circle" r="0.4" stroke="red" />
 `
       <line data-from="1" data-to="2" stroke="cyan" stroke-width=".05" />
       <line data-from="2" data-to="3" stroke="magenta" stroke-width=".05" />
@@ -33,18 +33,18 @@
 
 
   <script type="text/javascript">
-    let circlesData = {
+    let circleData = {
       "1": {
-        "cx": "12.825",
-        "cy": "8.4"
+        "cx": 16,
+        "cy": 10
       },
       "2": {
-        "cx": "13.275",
-        "cy": "8.425"
+        "cx": 16,
+        "cy": 10
       },
       "3": {
-        "cx": "14.75",
-        "cy": "8.125"
+        "cx": 16,
+        "cy": 10
       },
       "4": {
         "cx": 16,
@@ -55,6 +55,12 @@
         "cy": 10
       }
     };
+
+    for (let i = 1; i < 6; i++) {
+      const circleElement = document.querySelector(`circle[data-circle="${i}"]`)
+      circleElement.setAttributeNS(null, "cx", circleData[i]["cx"]);
+      circleElement.setAttributeNS(null, "cy", circleData[i]["cy"]);
+    }
 
     function makeDraggable(evt) {
       var svg = evt.target;
@@ -86,13 +92,14 @@
 
           var circleId = parseInt(selectedElement.getAttributeNS(null, 'data-circle'));
 
-          circlesData[circleId] = { cx: cx, cy: cy, }
+          circleData[circleId] = { cx: cx, cy: cy, }
           drawCenterLines();
         }
       }
 
       function endDrag() {
         selectedElement = null;
+        exportCircleData();
       }
 
       function getMousePosition(evt) {
@@ -104,25 +111,29 @@
       }
     }
 
+    let exportCircleData = () => {
+      console.log(circleData)
+    }
+
     let populateCircleData = () => {
       const circleElements = document.querySelectorAll('circle');
       for (const circle of circleElements) {
         const cx = circle.getAttributeNS(null, 'cx');
         const cy = circle.getAttributeNS(null, 'cy');
         const circleId = parseInt(circle.getAttributeNS(null, 'data-circle'));
-        circlesData[circleId] = { cx: parseFloat(cx), cy: parseFloat(cy) }
+        circleData[circleId] = { cx: parseFloat(cx), cy: parseFloat(cy) }
       }
     }
 
     let drawCenterLines = () => {
       for (let i = 1; i < 5; i++) {
         const nextCircleKey = i + 1;
-        if (circlesData[nextCircleKey]) {
+        if (circleData[nextCircleKey]) {
           const line = document.querySelector(`line[data-from="${i}"]`)
-          line.setAttributeNS(null, "x1", circlesData[i]['cx']);
-          line.setAttributeNS(null, "x2", circlesData[nextCircleKey]['cx']);
-          line.setAttributeNS(null, "y1", circlesData[i]['cy']);
-          line.setAttributeNS(null, "y2", circlesData[nextCircleKey]['cy']);
+          line.setAttributeNS(null, "x1", circleData[i]['cx']);
+          line.setAttributeNS(null, "x2", circleData[nextCircleKey]['cx']);
+          line.setAttributeNS(null, "y1", circleData[i]['cy']);
+          line.setAttributeNS(null, "y2", circleData[nextCircleKey]['cy']);
         }
       }
     }
