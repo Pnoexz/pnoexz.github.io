@@ -1,5 +1,5 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
   <title>Pnoexz' Apex Legends circle playground</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -10,12 +10,22 @@
     svg {
       width: 1200px;
       height: 1178px;
-      background: url("kc.png") no-repeat
+      background: url("olympus.jpg") no-repeat;
+      background-size: 1200px 1178px;
+
+      /* background: url("kc.png") no-repeat */
     }
   </style>
 </head>
 
 <body>
+  <div id="toolbar">
+    <select id="map-selector">
+      <option>KingsCanyon</option>
+      <option>WorldsEdge</option>
+      <option>Olympus</option>
+    </select>
+  </div>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20" onload="makeDraggable(evt)">
     <g stroke-width=".05" fill="#ffffff00">
       <circle data-circle="1" id="circle1" class="circle" r="7.3" stroke="yellow" />
@@ -150,6 +160,22 @@
     populateCircleData();
     drawCenterLines();
 
+  </script>
+
+  <script type="text/javascript">
+    let lookupTable = {
+      KingsCanyon:{image:"kc.png"},
+      WorldsEdge:{image:"we.png"},
+      Olympus:{image:"olympus.jpg"},
+    };
+
+    const mapSelector = document.querySelector('#map-selector');
+    let svgElement = document.querySelector('svg');
+    mapSelector.addEventListener('change', function (evt) {
+      const selectedMap = evt.target.value; // KC/WE/O
+      svgElement.style.backgroundImage = "url(" + lookupTable[selectedMap].image + ")";
+      console.log('ok', lookupTable[selectedMap].image)
+    })
   </script>
 </body>
 

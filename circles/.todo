@@ -1,11 +1,19 @@
 ☐ Olympus
-    ☐ Find image
-    ☐ Find circle in game
-    ☐ Scale
+    ✔ Find image
+    ✔ Find circle in game
+    ✔ Scale
+    ☐ Improve scale
 ☐ WE
     ☐ Find image
     ☐ Find circle in game
     ☐ Scale
-☐ Map selector
-☐ Map query param
+Toolbar:
+    ☐ Map selector
+        ✔ Markup
+        ☐ JS
+            ✔ Change map
+            ☐ Update query param
+            ☐ Make WE the default
+        ☐ Preload the images @low
 ☐ Floor query params
+☐ Consider taking the map from the actual game to be more consistent
