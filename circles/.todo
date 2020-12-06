@@ -12,7 +12,8 @@ Toolbar:
         ☐ JS
             ✔ Change map
             ☐ Update query param
+            ✔ Change selected option when map is not the default
             ✔ Make WE the default
         ☐ Preload the images @low
 ✔ Floor query params
-☐ Consider taking the map from the actual game to be more consistent
+✔ Consider taking the map from the actual game to be more consistent
