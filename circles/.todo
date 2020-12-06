@@ -1,10 +1,9 @@
 ☐ Olympus
     ✔ Find image
     ✔ Find circle in game
-    ✔ Scale
-    ☐ Improve scale
+    ☐ Scale
 ☐ WE
-    ☐ Find image
+    ✔ Find image
     ☐ Find circle in game
     ☐ Scale
 Toolbar:
@@ -13,7 +12,7 @@ Toolbar:
         ☐ JS
             ✔ Change map
             ☐ Update query param
-            ☐ Make WE the default
+            ✔ Make WE the default
         ☐ Preload the images @low
 ☐ Floor query params
 ☐ Consider taking the map from the actual game to be more consistent
