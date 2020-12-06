@@ -122,10 +122,12 @@
     }
 
     let exportCircleData = () => {
-      console.log(circleData)
-      // console.log(
       const st = Object.entries(circleData)
-        .map(([key, val]) => `${key}x=${val.cx}&${key}y=${val.cy}`)
+        .map(([key, val]) => {
+          const x = parseFloat(val.cx).toFixed(3);
+          const y = parseFloat(val.cy).toFixed(3);
+          return `${key}x=${x}&${key}y=${y}`;
+        })
         .join('&')
       ;
 
